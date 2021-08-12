@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import countriesReducer from "./countries.reducer";
-import covidDataReducer from "./covidInfo.reducer";
+import covidInfoReducer from "./covidData.reducer";
+import countryCovidDataReducer from "./countryCovidInfo.reducer";
 export default combineReducers({
-  countriesReducer,
-  covidDataReducer,
+  covidInfoReducer,
+  countryCovidDataReducer,
 });

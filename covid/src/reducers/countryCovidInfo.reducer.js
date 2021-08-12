@@ -1,4 +1,4 @@
-import { covidDataConstant } from "../constants/covidInfo.constants";
+import { covidDataConstant } from "../constants/countryCovidInfo.constants";
 
 const initialState = {
   covidDataFetchSuccess: false,
@@ -7,7 +7,7 @@ const initialState = {
   covidData: [],
 };
 
-const covidDataReducer = (state = initialState, action) => {
+const countryCovidDataReducer = (state = initialState, action) => {
   switch (action.type) {
     case covidDataConstant.FETCH_COVID_DATA_START:
       return {
@@ -37,4 +37,4 @@ const covidDataReducer = (state = initialState, action) => {
       return state;
   }
 };
-export default covidDataReducer;
+export default countryCovidDataReducer;

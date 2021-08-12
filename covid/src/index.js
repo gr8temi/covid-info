@@ -5,6 +5,7 @@ import "./styles/index.css";
 import "./styles/animate.css";
 import store from "./store";
 import Root from "./routes/Root";
+import "antd/dist/antd.css";
 // import register from "./serviceWorker";
 
 ReactDOM.render(<Root store={store} />, document.getElementById("root"));

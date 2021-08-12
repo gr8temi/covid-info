@@ -1,4 +1,4 @@
-import { covidDataConstant } from "../constants/covidInfo.constants";
+import { covidDataConstant } from "../constants/countryCovidInfo.constants";
 import request from "../request";
 const fetchCovidDataStarted = () => ({
   type: covidDataConstant.FETCH_COVID_DATA_START,

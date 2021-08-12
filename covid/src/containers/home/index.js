@@ -1,33 +1,93 @@
 import React, { useEffect } from "react";
-import { fetchCountries } from "../../actions/countries.actions";
+import { fetchCountriesAndSummary } from "../../actions/covidData.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Row, Col, Card, Avatar, Layout, Typography, Spin } from "antd";
+import CovidStatistics from "../../organisms/covidStatistics";
+import CardInfo from "../../organisms/cardInfo";
 
-const App = () => {
+const { Title } = Typography;
+const App = (props) => {
   const dispatch = useDispatch();
   const {
-    countriesReducer: {
-      countriesFetchLoading,
-      countriesFetchError,
-      countriesFetchSuccess,
+    covidInfoReducer: {
+      covidDataInfoLoading,
+      covidDataInfoSuccess,
       countries,
+      summary,
     },
   } = useSelector((state) => state);
 
   useEffect(() => {
-    dispatch(fetchCountries());
+    dispatch(fetchCountriesAndSummary());
   }, []);
 
+  const handleClick = (countryName) => {
+    props.history.push(`/country/${countryName}`);
+  };
+
   return (
-    <>
-      {countriesFetchSuccess &&
-        countries.map((country, index) => (
-          <div key={index}>
-            <h3>{country.Country}</h3>{" "}
-            <Link to={`/country/${country.Country}`}> More Info </Link>
-          </div>
-        ))}
-    </>
+    <Layout
+      style={{
+        display: "flex",
+        width: "100%",
+        alignItems: "center",
+        paddingTop: "20px",
+      }}
+    >
+      <CovidStatistics
+        data={summary.Global}
+        statistics={[
+          { value: "TotalConfirmed", text: "Total confirmed cases" },
+          { value: "NewConfirmed", text: "New Confirmed Cases" },
+          { value: "NewDeaths", text: "New Deaths", color: "#ff0334" },
+          { value: "TotalRecovered", text: "Total Recovered" },
+        ]}
+      />
+      <Title level={1} mark style={{ marginTop: "20px" }}>
+        Info by Countries
+      </Title>
+      {covidDataInfoSuccess && (
+        <Row
+          gutter={[
+            { xs: 8, sm: 16, md: 24, lg: 32 },
+            { xs: 8, sm: 16, md: 24, lg: 32 },
+          ]}
+          style={{ width: "70%" }}
+        >
+          {countries.sort().map((country, index) => {
+            return (
+              <Col
+                className="gutter-row"
+                xs={24}
+                sm={24}
+                md={12}
+                lg={12}
+                xl={12}
+                key={index}
+              >
+                <Card
+                  hoverable
+                  bodyStyle={{ background: "#E5E4E2" }}
+                  onClick={() => handleClick(country.Country)}
+                >
+                  <Card.Meta
+                    avatar={
+                      <Avatar
+                        src={`https://www.countryflags.io/${country.ISO2}/flat/64.png`}
+                      />
+                    }
+                    title={country.Country}
+                    description="Click Card for more details"
+                  />
+                  <CardInfo summary={summary} countryName={country.Country} />
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      )}
+      {covidDataInfoLoading && <Spin />}
+    </Layout>
   );
 };
 
