@@ -18,6 +18,7 @@ const App = (props) => {
   } = useSelector((state) => state);
 
   useEffect(() => {
+    console.log("here");
     dispatch(fetchCountriesAndSummary());
   }, []);
 
@@ -26,68 +27,82 @@ const App = (props) => {
   };
 
   return (
-    <Layout
-      style={{
-        display: "flex",
-        width: "100%",
-        alignItems: "center",
-        paddingTop: "20px",
-      }}
-    >
-      <CovidStatistics
-        data={summary.Global}
-        statistics={[
-          { value: "TotalConfirmed", text: "Total confirmed cases" },
-          { value: "NewConfirmed", text: "New Confirmed Cases" },
-          { value: "NewDeaths", text: "New Deaths", color: "#ff0334" },
-          { value: "TotalRecovered", text: "Total Recovered" },
-        ]}
-      />
-      <Title level={1} mark style={{ marginTop: "20px" }}>
-        Info by Countries
-      </Title>
+    <>
       {covidDataInfoSuccess && (
-        <Row
-          gutter={[
-            { xs: 8, sm: 16, md: 24, lg: 32 },
-            { xs: 8, sm: 16, md: 24, lg: 32 },
-          ]}
-          style={{ width: "70%" }}
+        <Layout
+          style={{
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+            paddingTop: "20px",
+          }}
         >
-          {countries.sort().map((country, index) => {
-            return (
-              <Col
-                className="gutter-row"
-                xs={24}
-                sm={24}
-                md={12}
-                lg={12}
-                xl={12}
-                key={index}
-              >
-                <Card
-                  hoverable
-                  bodyStyle={{ background: "#E5E4E2" }}
-                  onClick={() => handleClick(country.Country)}
+          <CovidStatistics
+            data={summary.Global}
+            statistics={[
+              { value: "TotalConfirmed", text: "Total confirmed cases" },
+              { value: "NewConfirmed", text: "New Confirmed Cases" },
+              { value: "NewDeaths", text: "New Deaths", color: "#ff0334" },
+              { value: "TotalRecovered", text: "Total Recovered" },
+            ]}
+          />
+          <Title level={1} mark style={{ marginTop: "20px" }}>
+            Info by Countries
+          </Title>
+
+          <Row
+            gutter={[
+              { xs: 8, sm: 16, md: 24, lg: 32 },
+              { xs: 8, sm: 16, md: 24, lg: 32 },
+            ]}
+            style={{ width: "70%" }}
+          >
+            {countries.sort().map((country, index) => {
+              return (
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={24}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  key={index}
                 >
-                  <Card.Meta
-                    avatar={
-                      <Avatar
-                        src={`https://www.countryflags.io/${country.ISO2}/flat/64.png`}
-                      />
-                    }
-                    title={country.Country}
-                    description="Click Card for more details"
-                  />
-                  <CardInfo summary={summary} countryName={country.Country} />
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
+                  <Card
+                    hoverable
+                    bodyStyle={{ background: "#E5E4E2" }}
+                    onClick={() => handleClick(country.Country)}
+                  >
+                    <Card.Meta
+                      avatar={
+                        <Avatar
+                          src={`https://www.countryflags.io/${country.ISO2}/flat/64.png`}
+                        />
+                      }
+                      title={country.Country}
+                      description="Click Card for more details"
+                    />
+                    <CardInfo summary={summary} countryName={country.Country} />
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        </Layout>
       )}
-      {covidDataInfoLoading && <Spin />}
-    </Layout>
+      {covidDataInfoLoading && (
+        <div
+          style={{
+            display: "flex",
+            height: "inherit",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Spin size="large" style={{ textAlign: "center" }} />
+        </div>
+      )}
+    </>
   );
 };
 

@@ -11,8 +11,8 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 const middleware = applyMiddleware(errorMiddleware, thunk, promise);
 const enhancer = composeWithDevTools(middleware);
 const persistConfig = {
-  key: "spaces",
-  storage
+  key: "covid",
+  storage,
   // stateReconciler: hardSet
 };
 
